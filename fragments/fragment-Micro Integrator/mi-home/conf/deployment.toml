@@ -1,0 +1,16 @@
+[server]
+hostname = "localhost"
+offset = 0
+
+[transport.http]
+listener.port = 8080
+listener.secured_port = 8043
+
+[management_api_basic_security_handler]
+enable = true
+
+
+[mediation]
+# This will then override the synapse.properties file as defined in the header of the properties file
+# This will allow using Saxon functions like `fn:matches($input, $pattern)`
+synapse.enable_xpath_dom_failover = true

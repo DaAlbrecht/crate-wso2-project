@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifacts>
+    <artifact name="HelloWorld" type="synapse/api"
+        serverRole="EnterpriseServiceBus" version="1.0.0">
+        <file>api/HelloWorld.xml</file>
+    </artifact>
+</artifacts>
