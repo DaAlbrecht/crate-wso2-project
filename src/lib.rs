@@ -55,10 +55,8 @@ pub fn run() -> anyhow::Result<()> {
             std::process::exit(0);
         }
     } else {
-        let _ = fs::create_dir_all(&target_dir);
+        let _ = fs::create_dir_all(&target_dir).expect("Failed to create project directory");
     }
-    //create project dir
-    let _ = fs::create_dir(&target_dir)?;
 
     //create project files
 

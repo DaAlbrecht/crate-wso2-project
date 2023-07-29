@@ -2,7 +2,8 @@ use anyhow::Context;
 use rust_embed::RustEmbed;
 use std::{
     fmt::{self, Display, Formatter},
-    path::PathBuf,
+    fs,
+    path::{self, PathBuf},
 };
 
 #[derive(Debug, Clone, Copy)]
@@ -59,19 +60,44 @@ impl ProjectTemplate {
         }
     }
 
-    pub fn render(&self, _target_dir: &std::path::Path, flavor: Flavor) -> anyhow::Result<()> {
+    pub fn render(&self, target_dir: &std::path::Path, flavor: Flavor) -> anyhow::Result<()> {
         let manifest_bytes = FRAGMENTS::get(&format!("fragment-{self}/pom.xml"))
             .with_context(|| "Failed to get manifest bytes")?
             .data;
 
         let manifest_str = String::from_utf8(manifest_bytes.to_vec())?;
 
+        //render all files that do not need custom rendering
+
+        // TODO: create project template file that contains all the files that need to be custom
+        // rendered -> create array of those files -> filter out those files from the list of all
+
         let files = FRAGMENTS::iter()
-            .filter(|f| PathBuf::from(f.to_string()).starts_with(&format!("fragment-{self}/")))
+            .filter(|f| {
+                f.to_string().starts_with(&format!("fragment-{self}/"))
+                    && !f.to_string().ends_with("pom.xml")
+            })
             .map(|f| f.to_string())
             .collect::<Vec<_>>();
 
-        println!("{:?}", files);
+        for file in files {
+            let data = FRAGMENTS::get(&file)
+                .with_context(|| format!("Failed to get file {}", file))?
+                .data;
+
+            // remove the first component, which is certainly the fragment directory they were in before getting embeded into the binary
+            let p = path::PathBuf::from(file)
+                .components()
+                .skip(1)
+                .collect::<path::PathBuf>();
+
+            let p = target_dir.join(p);
+            let file_name = p.file_name().unwrap();
+
+            let parent = p.parent().unwrap();
+            fs::create_dir_all(parent)?;
+            fs::write(parent.join(file_name), &data)?;
+        }
 
         Ok(())
     }
