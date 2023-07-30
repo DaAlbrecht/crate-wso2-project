@@ -2,8 +2,7 @@ use anyhow::Context;
 use rust_embed::RustEmbed;
 use std::{
     fmt::{self, Display, Formatter},
-    fs,
-    path::{self, PathBuf},
+    fs, path,
 };
 
 #[derive(Debug, Clone, Copy)]

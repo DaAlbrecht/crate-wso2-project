@@ -22,8 +22,9 @@ pub fn run() -> anyhow::Result<()> {
     //check if target dir exists, if so ask to overwrite or exit
     //
     let templates = ProjectTemplate::ALL.to_vec();
+
     let index = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Choose which language to use for your frontend")
+        .with_prompt("choose WSO2 product")
         .items(&templates)
         .default(0)
         .interact()
@@ -33,7 +34,7 @@ pub fn run() -> anyhow::Result<()> {
 
     let flavors = template.flavors();
 
-    let index = Select::with_theme(&ColorfulTheme::default())
+    let _index = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("choose flavor")
         .items(&flavors.iter().map(|f| f.slect_text()).collect::<Vec<_>>())
         .default(0)
