@@ -60,12 +60,25 @@ impl ProjectTemplate {
         }
     }
 
-    pub fn render(&self, target_dir: &std::path::Path, flavor: Flavor) -> anyhow::Result<()> {
+    pub fn render(&self, target_dir: &std::path::Path) -> anyhow::Result<()> {
         let manifest_bytes = FRAGMENTS::get(&format!("fragment-{self}/pom.xml"))
             .with_context(|| "Failed to get manifest bytes")?
             .data;
 
         let manifest_str = String::from_utf8(manifest_bytes.to_vec())?;
+
+        let project_name = target_dir.file_name().unwrap().to_string_lossy();
+
+        let manifest_str = self.replace_vars(
+            &manifest_str,
+            "~groupId~",
+            &format!("com.example.{}", project_name),
+        );
+
+        let manifest_str = self.replace_vars(&manifest_str, "~artifactId~", &project_name);
+        let manifest_str = self.replace_vars(&manifest_str, "~name~", &project_name);
+
+        fs::write(target_dir.join("pom.xml"), &manifest_str)?;
 
         //render all files that do not need custom rendering
 
@@ -100,5 +113,9 @@ impl ProjectTemplate {
         }
 
         Ok(())
+    }
+
+    fn replace_vars(&self, file: &str, placeholder: &str, r: &str) -> String {
+        file.replace(placeholder, r)
     }
 }

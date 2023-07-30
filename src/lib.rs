@@ -40,7 +40,7 @@ pub fn run() -> anyhow::Result<()> {
         .interact()
         .unwrap();
 
-    let flavor = flavors[index];
+    //let flavor = flavors[index];
 
     if target_dir.exists() {
         let term = Term::stderr();
@@ -60,7 +60,7 @@ pub fn run() -> anyhow::Result<()> {
 
     //create project files
 
-    template.render(&target_dir, flavor)?;
+    template.render(&target_dir)?;
 
     Ok(())
 }
