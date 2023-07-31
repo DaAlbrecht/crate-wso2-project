@@ -59,8 +59,10 @@ impl ProjectTemplate {
         }
     }
 
-    pub fn render(&self, target_dir: &std::path::Path) -> anyhow::Result<()> {
-        let manifest_bytes = FRAGMENTS::get(&format!("fragment-{self}/pom.xml"))
+    pub fn render(&self, flavor: &Flavor, target_dir: &std::path::Path) -> anyhow::Result<()> {
+        let prefix = format!("fragment-{self}-{flavor}", self = self, flavor = flavor);
+
+        let manifest_bytes = FRAGMENTS::get(&format!("{}/pom.xml", prefix))
             .with_context(|| "Failed to get manifest bytes")?
             .data;
 
@@ -79,14 +81,9 @@ impl ProjectTemplate {
 
         fs::write(target_dir.join("pom.xml"), &manifest_str)?;
 
-        //render all files that do not need custom rendering
-
-        // TODO: create project template file that contains all the files that need to be custom
-        // rendered -> create array of those files -> filter out those files from the list of all
-
         let files = FRAGMENTS::iter()
             .filter(|f| {
-                f.to_string().starts_with(&format!("fragment-{self}/"))
+                f.to_string().starts_with(&format!("{}", prefix))
                     && !f.to_string().ends_with("pom.xml")
             })
             .map(|f| f.to_string())

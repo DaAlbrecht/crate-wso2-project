@@ -34,14 +34,14 @@ pub fn run() -> anyhow::Result<()> {
 
     let flavors = template.flavors();
 
-    let _index = Select::with_theme(&ColorfulTheme::default())
+    let index = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("choose flavor")
         .items(&flavors.iter().map(|f| f.slect_text()).collect::<Vec<_>>())
         .default(0)
         .interact()
         .unwrap();
 
-    //let flavor = flavors[index];
+    let flavor = flavors[index];
 
     if target_dir.exists() {
         let term = Term::stderr();
@@ -52,6 +52,7 @@ pub fn run() -> anyhow::Result<()> {
             .interact()?
         {
             let _ = fs::remove_dir_all(&target_dir);
+            let _ = fs::create_dir_all(&target_dir).expect("Failed to create project directory");
         } else {
             std::process::exit(0);
         }
@@ -61,7 +62,7 @@ pub fn run() -> anyhow::Result<()> {
 
     //create project files
 
-    template.render(&target_dir)?;
+    template.render(&flavor, &target_dir)?;
 
     Ok(())
 }
