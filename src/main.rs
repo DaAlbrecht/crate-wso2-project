@@ -12,6 +12,6 @@ fn main() {
     let matches = cli().get_matches();
 
     if let Some(_) = matches.subcommand_matches("new") {
-        crate_wso2_project::run().unwrap();
+        create_wso2_project::run().unwrap();
     }
 }
