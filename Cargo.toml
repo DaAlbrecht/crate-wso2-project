@@ -1,8 +1,10 @@
 [package]
 name = "create-wso2-project"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
 repository = "https://github.com/DaAlbrecht/create-wso2-project"
+license = "MIT"
+description = "scaffolding tool for wso2 projects"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
