@@ -2,6 +2,7 @@
 name = "create-wso2-project"
 version = "0.1.0"
 edition = "2021"
+repository = "https://github.com/DaAlbrecht/create-wso2-project"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
