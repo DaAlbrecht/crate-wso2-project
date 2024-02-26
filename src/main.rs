@@ -11,7 +11,7 @@ fn cli() -> Command {
 fn main() {
     let matches = cli().get_matches();
 
-    if let Some(_) = matches.subcommand_matches("new") {
+    if matches.subcommand_matches("new").is_some() {
         create_wso2_project::run().unwrap();
     }
 }

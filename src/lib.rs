@@ -9,7 +9,7 @@ pub fn run() -> anyhow::Result<()> {
 
     let project_name = dialoguer::Input::<String>::new()
         .with_prompt("Project Name")
-        .default("integon-demo".to_string())
+        .default("demo".to_string())
         .interact_text()
         .unwrap()
         .trim()
@@ -51,13 +51,13 @@ pub fn run() -> anyhow::Result<()> {
             .default(false)
             .interact()?
         {
-            let _ = fs::remove_dir_all(&target_dir);
-            let _ = fs::create_dir_all(&target_dir).expect("Failed to create project directory");
+            fs::remove_dir_all(&target_dir)?;
+            fs::create_dir_all(&target_dir).expect("Failed to create project directory");
         } else {
             std::process::exit(0);
         }
     } else {
-        let _ = fs::create_dir_all(&target_dir).expect("Failed to create project directory");
+        fs::create_dir_all(&target_dir).expect("Failed to create project directory");
     }
 
     //create project files

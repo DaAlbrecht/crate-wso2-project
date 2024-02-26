@@ -1,0 +1,25 @@
+type: api
+version: v4.2.0
+data:
+  name: httpbin
+  context: /httpbin
+  version: 1.0.0
+  provider: admin
+  lifeCycleStatus: CREATED
+  isRevision: false
+  revisionId: 0
+  type: HTTP
+  transport:
+  - http
+  - https
+  policies:
+  - Unlimited
+  visibility: PUBLIC
+  endpointConfig:
+    endpoint_type: http
+    production_endpoints:
+      url: http://httpbin:80
+    sandbox_endpoints:
+      url: http://httpbin:80
+  endpointImplementationType: ENDPOINT
+  websubSubscriptionConfiguration: null

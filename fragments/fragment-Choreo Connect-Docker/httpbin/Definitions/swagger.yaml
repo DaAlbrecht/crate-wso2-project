@@ -1,0 +1,16 @@
+openapi: 3.0.1
+info:
+  title: Sample Swagger Specification
+  version: 1.0.0
+  x-wso2-apictl-init: true
+paths:
+  /get:
+    x-wso2-request-interceptor:
+      serviceURL: http://interceptor-bal:3000
+      includes:
+      - request_body
+    get:
+      x-wso2-disable-security: true
+      responses:
+        '200':
+          description: ''
