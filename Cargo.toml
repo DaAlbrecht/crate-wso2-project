@@ -1,6 +1,6 @@
 [package]
 name = "create-wso2-project"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 repository = "https://github.com/DaAlbrecht/create-wso2-project"
 license = "MIT"
